@@ -1,7 +1,7 @@
 import streamlit as st
 import json
 from openai import OpenAI
-import os
+from io import BytesIO
 
 # Инициализация клиента Nebius
 client = OpenAI(
@@ -12,18 +12,14 @@ client = OpenAI(
 # ======= Системный JSON-промт =======
 SYSTEM_PROMPT = {
     "task": "format_announcement_hse_card",
-    "description": "Преобразовать текст объявления или рассылки в структурированный HTML-блок в фирменном стиле НИУ ВШЭ (карточка с заголовками, блоками, списками, кнопками).",
+    "description": "Преобразовать текст объявления или рассылки в структурированный HTML-блок в фирменном стиле НИУ ВШЭ.",
     "instructions": {
         "steps": [
             "1. Прочитать исходный текст объявления из поля input_text.",
-            "2. Разбить текст на логические разделы (введение, основная информация, инструкции, контакты и т.д.).",
-            "3. Сократить длинные фразы, повысить читаемость и убрать избыточные повторы.",
-            "4. Использовать официальный, дружелюбный стиль НИУ ВШЭ.",
-            "5. Оформить результат в адаптивной HTML-карточке с цветами НИУ ВШЭ: тёмно-синий (#00256c), серо-голубой (#e5ebf8), белый фон, мягкие тени и округлые углы.",
-            "6. Добавить логотип НИУ ВШЭ (https://www.hse.ru/static/images/hse_logo_white.svg) в шапку.",
-            "7. Если есть ссылки — оформить их как кнопки внизу карточки.",
-            "8. Сохранять структуру: h2/h3/h4, списки, выделения ключевых слов.",
-            "9. Вернуть только чистый HTML-код карточки."
+            "2. Разбить текст на логические блоки.",
+            "3. Сократить длинные фразы, сделать читаемо.",
+            "4. Использовать официальный стиль ВШЭ.",
+            "5. Вернуть JSON с полями {type: 'HTML', content: '<div>...</div>'}."
         ]
     },
     "style_guidelines": {
@@ -40,46 +36,60 @@ SYSTEM_PROMPT = {
 }
 
 # ======= Интерфейс Streamlit =======
-st.set_page_config(page_title="HSE Email Formatter", page_icon="📧", layout="wide")
+st.set_page_config(page_title="HSE HTML Generator", page_icon="🎓", layout="wide")
+st.title("🎓 Генератор карточек НИУ ВШЭ")
+st.caption("Создаёт HTML-карточку рассылки в фирменном стиле ВШЭ через Nebius API")
 
-st.title("📧 Генератор карточек НИУ ВШЭ")
-st.caption("Автоматическое оформление рассылок и объявлений в фирменном HTML-стиле ВШЭ.")
+user_text = st.text_area(
+    "Введите текст объявления:",
+    height=250,
+    placeholder="Вставьте сюда текст письма или новости..."
+)
 
-with st.form("input_form"):
-    user_text = st.text_area("Введите текст объявления:", height=250, placeholder="Вставьте сюда текст письма или новости...")
-    submitted = st.form_submit_button("✨ Сформировать HTML")
+if st.button("✨ Сформировать HTML"):
+    if not user_text.strip():
+        st.warning("Введите текст, чтобы начать генерацию.")
+    else:
+        with st.spinner("Генерация карточки через Qwen3-235B..."):
+            try:
+                payload = SYSTEM_PROMPT.copy()
+                payload["input_text"] = user_text
 
-if submitted and user_text.strip():
-    with st.spinner("Генерация HTML-карточки..."):
-        try:
-            # Формируем json-пакет для модели
-            payload = SYSTEM_PROMPT.copy()
-            payload["input_text"] = user_text
+                response = client.chat.completions.create(
+                    model="Qwen/Qwen3-235B-A22B-Thinking-2507",
+                    response_format={"type": "json_object"},
+                    messages=[
+                        {"role": "system", "content": json.dumps(payload, ensure_ascii=False)},
+                        {"role": "user", "content": [{"type": "text", "text": user_text}]}
+                    ],
+                )
 
-            response = client.chat.completions.create(
-                model="Qwen/Qwen3-235B-A22B-Thinking-2507",
-                response_format={"type": "json_object"},
-                messages=[
-                    {"role": "system", "content": json.dumps(payload, ensure_ascii=False)},
-                    {"role": "user", "content": [{"type": "text", "text": user_text}]}
-                ],
-            )
+                raw_content = response.choices[0].message.content.strip()
+                parsed = json.loads(raw_content)
 
-            result = json.loads(response.choices[0].message.content)
-            html_code = result.get("html", response.choices[0].message.content)
+                # Если модель вернула {type: "HTML", content: "<div>...</div>"}
+                html_code = parsed.get("content") if isinstance(parsed, dict) and "content" in parsed else raw_content
 
-            st.success("✅ Карточка успешно создана!")
+                st.success("✅ Карточка успешно создана!")
 
-            # Отображение HTML-кода
-            st.subheader("📄 HTML-код")
-            st.code(html_code, language="html")
+                # === Отображение HTML-кода ===
+                st.subheader("📄 HTML-код")
+                st.code(html_code, language="html")
 
-            # Предпросмотр
-            st.subheader("🌐 Предпросмотр")
-            st.components.v1.html(html_code, height=900, scrolling=True)
+                # === Кнопка для скачивания ===
+                html_bytes = BytesIO(html_code.encode("utf-8"))
+                st.download_button(
+                    label="💾 Скачать HTML-файл",
+                    data=html_bytes,
+                    file_name="hse_card.html",
+                    mime="text/html"
+                )
 
-        except Exception as e:
-            st.error(f"Ошибка: {e}")
+                # === Предпросмотр ===
+                st.subheader("🌐 Предпросмотр")
+                st.components.v1.html(html_code, height=1000, scrolling=True)
 
+            except Exception as e:
+                st.error(f"❌ Ошибка при обработке ответа: {e}")
 else:
-    st.info("Введите текст и нажмите «Сформировать HTML», чтобы начать.")
+    st.info("Введите текст и нажмите «✨ Сформировать HTML», чтобы создать карточку.")
