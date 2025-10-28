@@ -201,7 +201,7 @@ def generate_hse_html(client: OpenAI, user_text: str) -> str:
         HTML-код карточки
     """
     response = client.chat.completions.create(
-        model="Qwen/Qwen3-235B-A22B-Thinking-2507",
+        model="Qwen/Qwen3-Coder-30B-A3B-Instruct",
         response_format={"type": "json_object"},
         messages=[
             {"role": "system", "content": SYSTEM_MESSAGE},
