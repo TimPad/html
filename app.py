@@ -287,17 +287,35 @@ def get_supabase_client() -> Client:
 
 def load_students_from_supabase() -> pd.DataFrame:
     """
-    Загрузка списка студентов из Supabase
+    Загрузка списка студентов из Supabase (все записи с пагинацией)
     
     Returns:
         DataFrame со студентами
     """
     try:
         supabase = get_supabase_client()
-        response = supabase.table('students').select('*').execute()
         
-        if response.data:
-            return pd.DataFrame(response.data)
+        # Загружаем все записи с пагинацией
+        all_data = []
+        page_size = 1000
+        offset = 0
+        
+        while True:
+            response = supabase.table('students').select('*').range(offset, offset + page_size - 1).execute()
+            
+            if response.data:
+                all_data.extend(response.data)
+                
+                # Если получили меньше записей, чем page_size, значит это последняя страница
+                if len(response.data) < page_size:
+                    break
+                    
+                offset += page_size
+            else:
+                break
+        
+        if all_data:
+            return pd.DataFrame(all_data)
         else:
             st.warning("⚠️ Таблица students пуста в Supabase")
             return pd.DataFrame()
@@ -314,17 +332,35 @@ def create_peresdachi_table_if_not_exists():
 
 def load_existing_peresdachi() -> pd.DataFrame:
     """
-    Загрузка существующих записей из таблицы peresdachi
+    Загрузка существующих записей из таблицы peresdachi (все записи с пагинацией)
     
     Returns:
         DataFrame с существующими пересдачами
     """
     try:
         supabase = get_supabase_client()
-        response = supabase.table('peresdachi').select('*').execute()
         
-        if response.data:
-            return pd.DataFrame(response.data)
+        # Загружаем все записи с пагинацией
+        all_data = []
+        page_size = 1000
+        offset = 0
+        
+        while True:
+            response = supabase.table('peresdachi').select('*').range(offset, offset + page_size - 1).execute()
+            
+            if response.data:
+                all_data.extend(response.data)
+                
+                # Если получили меньше записей, чем page_size, значит это последняя страница
+                if len(response.data) < page_size:
+                    break
+                    
+                offset += page_size
+            else:
+                break
+        
+        if all_data:
+            return pd.DataFrame(all_data)
         else:
             return pd.DataFrame()
     except Exception as e:
