@@ -288,9 +288,10 @@ def get_supabase_client() -> Client:
 def load_students_from_supabase() -> pd.DataFrame:
     """
     Загрузка списка студентов из Supabase (все записи с пагинацией)
+    Автоматически переименовывает колонки в требуемый формат
     
     Returns:
-        DataFrame со студентами
+        DataFrame со студентами с переименованными колонками
     """
     try:
         supabase = get_supabase_client()
@@ -315,7 +316,24 @@ def load_students_from_supabase() -> pd.DataFrame:
                 break
         
         if all_data:
-            return pd.DataFrame(all_data)
+            df = pd.DataFrame(all_data)
+            
+            # Переименование колонок из формата Supabase в требуемый формат
+            column_mapping = {
+                'корпоративная_почта': 'Адрес электронной почты',
+                'фио': 'ФИО',
+                'филиал_кампус': 'Филиал (кампус)',
+                'факультет': 'Факультет',
+                'образовательная_программа': 'Образовательная программа',
+                'группа': 'Группа',
+                'курс': 'Курс'
+            }
+            
+            # Переименовываем только те колонки, которые существуют
+            existing_columns = {k: v for k, v in column_mapping.items() if k in df.columns}
+            df = df.rename(columns=existing_columns)
+            
+            return df
         else:
             st.warning("⚠️ Таблица students пуста в Supabase")
             return pd.DataFrame()
@@ -957,18 +975,6 @@ def main():
             st.error(f"❌ Ошибка подключения к Supabase: {str(e)}")
             st.stop()
         
-        # Загрузка студентов из Supabase
-        with st.spinner("📥 Загрузка списка студентов из Supabase..."):
-            students_df = load_students_from_supabase()
-        
-        if students_df.empty:
-            st.error("❌ Список студентов пуст. Загрузите данные в таблицу `students` в Supabase.")
-            st.stop()
-        else:
-            st.success(f"✅ Загружено {len(students_df)} студентов из Supabase")
-            with st.expander("👀 Предпросмотр списка студентов"):
-                st.dataframe(students_df.head(10), use_container_width=True)
-        
         st.markdown("---")
         
         # Загрузка файла с оценками
@@ -987,6 +993,16 @@ def main():
                 
                 st.success("✅ Файл с оценками успешно загружен!")
                 
+                # Загрузка студентов из Supabase ТОЛЬКО после загрузки файла
+                with st.spinner("📥 Загрузка списка студентов из Supabase..."):
+                    students_df = load_students_from_supabase()
+                
+                if students_df.empty:
+                    st.error("❌ Список студентов пуст. Загрузите данные в таблицу `students` в Supabase.")
+                    st.stop()
+                else:
+                    st.success(f"✅ Загружено {len(students_df)} студентов из Supabase")
+                
                 col1, col2, col3 = st.columns(3)
                 with col1:
                     st.metric("Записей с оценками", len(grades_df))
@@ -995,8 +1011,14 @@ def main():
                 with col3:
                     st.metric("Колонок в оценках", len(grades_df.columns))
                 
-                with st.expander("👀 Предпросмотр файла с оценками"):
-                    st.dataframe(grades_df.head(), use_container_width=True)
+                col_preview1, col_preview2 = st.columns(2)
+                with col_preview1:
+                    with st.expander("👀 Предпросмотр файла с оценками"):
+                        st.dataframe(grades_df.head(), use_container_width=True)
+                
+                with col_preview2:
+                    with st.expander("👀 Предпросмотр списка студентов"):
+                        st.dataframe(students_df.head(10), use_container_width=True)
                 
                 if st.button("🚀 Обработать данные", type="primary", key="process_btn"):
                     with st.spinner("⚙️ Обработка пересдач..."):
