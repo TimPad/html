@@ -289,20 +289,22 @@ def load_students_from_supabase() -> pd.DataFrame:
     """
     Загрузка списка студентов из Supabase (все записи с пагинацией)
     Автоматически переименовывает колонки в требуемый формат
+    Фильтрует студентов по курсу = "Курс 4"
     
     Returns:
-        DataFrame со студентами с переименованными колонками
+        DataFrame со студентами с переименованными колонками и фильтром по курсу
     """
     try:
         supabase = get_supabase_client()
         
-        # Загружаем все записи с пагинацией
+        # Загружаем все записи с пагинацией и фильтром по курсу
         all_data = []
         page_size = 1000
         offset = 0
         
         while True:
-            response = supabase.table('students').select('*').range(offset, offset + page_size - 1).execute()
+            # Добавляем фильтр по курсу = "Курс 4"
+            response = supabase.table('students').select('*').eq('курс', 'Курс 4').range(offset, offset + page_size - 1).execute()
             
             if response.data:
                 all_data.extend(response.data)
@@ -335,7 +337,7 @@ def load_students_from_supabase() -> pd.DataFrame:
             
             return df
         else:
-            st.warning("⚠️ Таблица students пуста в Supabase")
+            st.warning("⚠️ Таблица students пуста или нет студентов на Курсе 4 в Supabase")
             return pd.DataFrame()
     except Exception as e:
         st.error(f"❌ Ошибка при загрузке студентов из Supabase: {str(e)}")
