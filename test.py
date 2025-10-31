@@ -790,6 +790,36 @@ def upload_course_data_to_supabase(supabase, course_data, course_name):
             st.error(f"❌ Неизвестный курс: {course_name}")
             return False
             
+        st.info(f"📊 Фильтрация студентов по уровню образования и курсу...")
+        
+        # Загружаем всех студентов из Supabase
+        students_df = load_students_from_supabase()
+        
+        if students_df.empty:
+            st.warning("⚠️ Таблица students пуста. Продолжаем без фильтрации.")
+            allowed_emails = None
+        else:
+            # Фильтруем студентов по уровню образования и курсу
+            allowed_education_levels = ['Бакалавриат', 'Специалитет']
+            allowed_courses = ['Курс 1', 'Курс 2', 'Курс 3', 'Курс 4']
+            
+            # Проверяем наличие колонки уровень_образования
+            if 'Уровень образования' in students_df.columns and 'Курс' in students_df.columns:
+                filtered_students = students_df[
+                    (students_df['Уровень образования'].isin(allowed_education_levels)) & 
+                    (students_df['Курс'].isin(allowed_courses))
+                ]
+                
+                total_students = len(students_df)
+                filtered_count = len(filtered_students)
+                st.info(f"🎯 Фильтрация: {filtered_count} из {total_students} студентов (Бакалавриат/Специалитет, Курс 1-4)")
+                
+                # Нормализуем email для сравнения
+                allowed_emails = set(filtered_students['Адрес электронной почты'].astype(str).str.lower().str.strip())
+            else:
+                st.warning("⚠️ Колонка 'Уровень образования' не найдена. Продолжаем без фильтрации.")
+                allowed_emails = None
+        
         st.info(f"📈 Загрузка курса {course_name} в {table_name}...")
         if course_data is None or course_data.empty:
             st.warning(f"⚠️ Нет данных для курса {course_name}")
@@ -797,12 +827,20 @@ def upload_course_data_to_supabase(supabase, course_data, course_name):
 
         records_for_upsert = []
         processed_emails = set()
+        filtered_out_count = 0
+        
         for _, row in course_data.iterrows():
             email = str(row.get('Корпоративная почта', '')).strip().lower()
             if not email or '@edu.hse.ru' not in email:
                 continue
             if email in processed_emails:
                 continue
+            
+            # Проверяем, есть ли фильтрация
+            if allowed_emails is not None and email not in allowed_emails:
+                filtered_out_count += 1
+                continue
+                
             processed_emails.add(email)
             
             percent_col = f'Процент_{course_name}'
@@ -817,6 +855,9 @@ def upload_course_data_to_supabase(supabase, course_data, course_name):
                 'корпоративная_почта': email,
                 'процент_завершения': progress_value
             })
+        
+        if filtered_out_count > 0:
+            st.info(f"🛡️ Отфильтровано {filtered_out_count} студентов (не Бакалавриат/Специалитет или не Курс 1-4)")
         
         if not records_for_upsert:
             st.info(f"📋 Нет записей для курса {course_name}")
