@@ -1060,7 +1060,7 @@ def main():
     with st.sidebar:
         st.image(LOGO_URL, width=160)  # уменьшено до 160px для лучшей пропорции
         st.markdown("<br>", unsafe_allow_html=True)
-        tool = st.radio(
+        tool = st.selectbox(
             "Инструмент",
             [
                 "Перезачет оценок",
