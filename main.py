@@ -101,10 +101,10 @@ st.markdown("---")
 pages = [
     st.Page("page_grades.py", title="Перезачет оценок", icon="📊"),
     st.Page("page_cards.py", title="Генератор HTML-карточек", icon="🎓"),
-    st.Page("page_certificates.py", title="Генератор сертификатов", icon="📜"),
-    st.Page("page_resits.py", title="Обработка пересдач внешней оценки", icon="📝"),
-    st.Page("page_analytics.py", title="Аналитика курсов", icon="📈"),
-    st.Page("page_students.py", title="Обновление списка студентов", icon="👥"),
+    #st.Page("page_certificates.py", title="Генератор сертификатов", icon="📜"),
+    #st.Page("page_resits.py", title="Обработка пересдач внешней оценки", icon="📝"),
+    #st.Page("page_analytics.py", title="Аналитика курсов", icon="📈"),
+    #st.Page("page_students.py", title="Обновление списка студентов", icon="👥"),
 ]
 
 # Используем navigation в боковой панели
