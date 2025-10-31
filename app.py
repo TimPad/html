@@ -251,10 +251,11 @@ def get_unique_courses_from_supabase() -> List[str]:
     """Получить уникальные значения из колонки 'курс' в таблице students"""
     try:
         supabase = get_supabase_client()
-        response = supabase.table('students').select('курс', distinct=True).execute()
+        response = supabase.table('students').select('курс').execute()
         if response.data:
-            courses = sorted({row['курс'] for row in response.data if row.get('курс')})
-            return courses
+            # Извлекаем значения, фильтруем None/пустые и делаем уникальными
+            courses = {row['курс'] for row in response.data if row.get('курс')}
+            return sorted(courses)
         else:
             return []
     except Exception as e:
