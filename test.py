@@ -1696,15 +1696,15 @@ def main():
                 if st.button("🚀 Обновить список студентов в Supabase", type="primary", key="update_students_btn"):
                     with st.spinner("🔄 Обновление базы данных..."):
                         try:
-                        if upload_students_to_supabase(supabase, students_df):
-                            st.success("✅ Список студентов обновлён!")
-                            st.balloons()
-                        else:
-                            st.error("❌ Не удалось обновить список студентов")
-                        
-                    except Exception as e:
-                        st.error(f"❌ Ошибка при обновлении: {str(e)}")
-                        st.exception(e)
+                            if upload_students_to_supabase(supabase, students_df):
+                                st.success("✅ Список студентов обновлён!")
+                                st.balloons()
+                            else:
+                                st.error("❌ Не удалось обновить список студентов")
+                            
+                        except Exception as e:
+                            st.error(f"❌ Ошибка при обновлении: {str(e)}")
+                            st.exception(e)
             
             except Exception as e:
                 st.error(f"❌ Ошибка при загрузке файла: {str(e)}")
