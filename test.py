@@ -1084,37 +1084,74 @@ def main():
     st.markdown("---")
 
     # =============================================================================
-    # БОКОВАЯ ПАНЕЛЬ С ИКОНКАМИ (Apple-style)
-    # =============================================================================
-    tool_icons = {
-        "Перезачет оценок": '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="3" y2="21"></line><line x1="9" y1="12" x2="9" y2="21"></line><line x1="15" y1="12" x2="15" y2="21"></line><line x1="21" y1="12" x2="21" y2="21"></line><path d="M3 3v6a6 6 0 0 0 6 6h6a6 6 0 0 0 6-6V3"></path></svg>',
-        "Генератор HTML-карточек": '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>',
-        "Генератор сертификатов": '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>',
-        "Обработка пересдач внешней оценки": '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><path d="M12 11h4"></path><path d="M12 16h4"></path><path d="M8 11h.01"></path><path d="M8 16h.01"></path></svg>',
-        "Аналитика курсов": '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>',
-        "Обновление списка студентов": '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>'
-    }
+# БОКОВАЯ ПАНЕЛЬ С ИКОНКАМИ (Apple-style)
+# =============================================================================
+tool_icons = {
+    "Перезачет оценок": '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="3" y2="21"></line><line x1="9" y1="12" x2="9" y2="21"></line><line x1="15" y1="12" x2="15" y2="21"></line><line x1="21" y1="12" x2="21" y2="21"></line><path d="M3 3v6a6 6 0 0 0 6 6h6a6 6 0 0 0 6-6V3"></path></svg>',
+    "Генератор HTML-карточек": '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>',
+    "Генератор сертификатов": '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>',
+    "Обработка пересдач внешней оценки": '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><path d="M12 11h4"></path><path d="M12 16h4"></path><path d="M8 11h.01"></path><path d="M8 16h.01"></path></svg>',
+    "Аналитика курсов": '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>',
+    "Обновление списка студентов": '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>'
+}
 
-    with st.sidebar:
-        st.image(LOGO_URL, width=200)
-        st.markdown("### 🎯 Инструменты")
-        tool_labels = list(tool_icons.keys())
-        for label in tool_labels:
-            icon_html = tool_icons[label]
-            if st.button(f"{icon_html} {label}", key=f"tool_{label}", use_container_width=True):
-                st.session_state.selected_tool = label
+with st.sidebar:
+    st.image(LOGO_URL, width=200)
+    st.markdown("### 🎯 Инструменты")
+    tool_labels = list(tool_icons.keys())
+    
+    # Генерируем HTML для каждой кнопки
+    for label in tool_labels:
+        icon_html = tool_icons[label]
+        button_id = f"tool_{label.replace(' ', '_')}"
+        
+        # Создаем кастомную кнопку через HTML
+        button_html = f"""
+        <div style="margin: 4px 0;">
+            <button 
+                id="{button_id}" 
+                style="
+                    width: 100%;
+                    background: transparent;
+                    border: none;
+                    padding: 10px 16px;
+                    text-align: left;
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                    border-radius: 12px;
+                    cursor: pointer;
+                    color: #f5f5f7;
+                    font-size: 16px;
+                    font-weight: 500;
+                    transition: background 0.2s;
+                "
+                onmouseover="this.style.background='#2c2c2e'"
+                onmouseout="this.style.background='transparent'"
+                onclick="window.parent.document.getElementById('{button_id}').click()"
+            >
+                {icon_html}
+                {label}
+            </button>
+        </div>
+        """
+        st.markdown(button_html, unsafe_allow_html=True)
+        
+        # Добавляем скрытую кнопку для обработки клика
+        if st.button("", key=button_id, help=label, use_container_width=True):
+            st.session_state.selected_tool = label
 
-        st.markdown("---")
-        st.markdown("### ℹ️ О платформе")
-        st.info("""
-        **DataCulture Platform** объединяет шесть ключевых инструментов:
-        1. **Перезачет оценок** – автоматический расчет итоговых оценок  
-        2. **Генератор карточек** – создание HTML-рассылок в фирменном стиле ВШЭ  
-        3. **Сертификаты** – обработка данных для выдачи сертификатов  
-        4. **Пересдачи** – обработка пересдач внешней оценки  
-        5. **Аналитика курсов** – обработка и загрузка аналитики курсов в Supabase  
-        6. **Обновление студентов** – загрузка и обновление списка студентов в Supabase  
-        """)
+    st.markdown("---")
+    st.markdown("### ℹ️ О платформе")
+    st.info("""
+    **DataCulture Platform** объединяет шесть ключевых инструментов:
+    1. **Перезачет оценок** – автоматический расчет итоговых оценок  
+    2. **Генератор карточек** – создание HTML-рассылок в фирменном стиле ВШЭ  
+    3. **Сертификаты** – обработка данных для выдачи сертификатов  
+    4. **Пересдачи** – обработка пересдач внешней оценки  
+    5. **Аналитика курсов** – обработка и загрузка аналитики курсов в Supabase  
+    6. **Обновление студентов** – загрузка и обновление списка студентов в Supabase  
+    """)
 
     # Получаем выбранный инструмент
     tool = st.session_state.get("selected_tool", "Перезачет оценок")
