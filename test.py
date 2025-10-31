@@ -806,7 +806,7 @@ def upload_course_data_to_supabase(supabase, course_data, course_name):
             # Проверяем наличие колонки уровень_образования
             if 'Уровень образования' in students_df.columns and 'Курс' in students_df.columns:
                 filtered_students = students_df[
-                    (students_df['Уровень образования'].isin(allowed_education_levels)) & 
+                    (students_df['уровень_образования'].isin(allowed_education_levels)) & 
                     (students_df['Курс'].isin(allowed_courses))
                 ]
                 
@@ -817,7 +817,7 @@ def upload_course_data_to_supabase(supabase, course_data, course_name):
                 # Нормализуем email для сравнения
                 allowed_emails = set(filtered_students['Адрес электронной почты'].astype(str).str.lower().str.strip())
             else:
-                st.warning("⚠️ Колонка 'Уровень образования' не найдена. Продолжаем без фильтрации.")
+                st.warning("⚠️ Колонка 'уровень_образования' не найдена. Продолжаем без фильтрации.")
                 allowed_emails = None
         
         st.info(f"📈 Загрузка курса {course_name} в {table_name}...")
