@@ -1,6 +1,6 @@
 [theme]
-primaryColor = "#4a86e8"          # Светло-синий акцент (хорошо сочетается с тёмным фоном)
-backgroundColor = "#1e1e22"       # Очень тёмно-серый (почти чёрный, но мягче)
-secondaryBackgroundColor = "#2a2a30"  # Чуть светлее фона — для карточек и блоков
-textColor = "#e0e0e6"             # Светло-серый текст (не чисто белый — меньше усталости глаз)
-font = "sans serif"               # Чистый и читаемый шрифт
+primaryColor = "#5A9DF8"  # Смягчённый синий для лучшей гармонии
+backgroundColor = "#1e1e22"
+secondaryBackgroundColor = "#2a2a30"
+textColor = "#e0e0e6"
+font = "sans serif"
