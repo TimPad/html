@@ -971,10 +971,10 @@ def extract_course_data(uploaded_file, course_name):
 # =============================================================================
 
 def main():
-    """Главная функция приложения с Apple-style навигацией"""
+    """Главная функция приложения"""
     
     # =============================================================================
-    # APPLE-STYLE CSS (совместимо с твоей тёмной темой из config.toml)
+    # APPLE-STYLE CSS (совместимо с твоей тёмной темой)
     # =============================================================================
     st.markdown("""
     <style>
@@ -991,45 +991,67 @@ def main():
     h2 { font-size: 24px !important; margin-top: 32px; margin-bottom: 16px; }
     h3 { font-size: 20px !important; }
 
-    /* ------------------ Сайдбар: кастомные кнопки с иконками ------------------ */
-    div[data-testid="stSidebar"] {
-        background-color: #1e1e22 !important;
-    }
-    div[data-testid="stSidebar"] .sidebar-button {
+    /* ------------------ Сайдбар: иконки через background SVG ------------------ */
+    div[data-testid="stSidebar"] div[data-baseweb="radio"] div[role="radiogroup"] > label {
         display: flex;
         align-items: center;
         gap: 12px;
-        width: 100%;
-        padding: 10px 16px;
-        margin: 4px 0;
-        background: transparent;
-        border: none;
-        border-radius: 12px;
-        color: #e0e0e6;
-        font-size: 16px;
-        font-weight: 500;
-        text-align: left;
-        cursor: pointer;
-        transition: background 0.2s;
+        padding: 8px 0;
     }
-    div[data-testid="stSidebar"] .sidebar-button:hover {
-        background: #2a2a30;
+    div[data-testid="stSidebar"] div[data-baseweb="radio"] div[role="radiogroup"] > label > div:first-child {
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
-    div[data-testid="stSidebar"] .sidebar-button.selected {
-        background: #2a2a30;
-        color: #4a86e8;
-    }
-    div[data-testid="stSidebar"] .sidebar-button svg {
+    /* Иконки как background SVG (цвет = textColor из config.toml) */
+    div[data-testid="stSidebar"] label[for*="Перезачет"]::before {
+        content: "";
+        display: block;
         width: 20px;
         height: 20px;
-        stroke: currentColor;
-        stroke-width: 2;
-        stroke-linecap: round;
-        stroke-linejoin: round;
-        fill: none;
+        background-image: url("image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23e0e0e6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='3' y1='12' x2='3' y2='21'%3E%3C/line%3E%3Cline x1='9' y1='12' x2='9' y2='21'%3E%3C/line%3E%3Cline x1='15' y1='12' x2='15' y2='21'%3E%3C/line%3E%3Cline x1='21' y1='12' x2='21' y2='21'%3E%3C/line%3E%3Cpath d='M3 3v6a6 6 0 0 0 6 6h6a6 6 0 0 0 6-6V3'%3E%3C/path%3E%3C/svg%3E");
+        background-size: contain;
+        background-repeat: no-repeat;
+    }
+    div[data-testid="stSidebar"] label[for*="Генератор HTML"]::before {
+        content: "";
+        display: block;
+        width: 20px;
+        height: 20px;
+        background-image: url("image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23e0e0e6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z'%3E%3C/path%3E%3Cpolyline points='14 2 14 8 20 8'%3E%3C/polyline%3E%3Cline x1='16' y1='13' x2='8' y2='13'%3E%3C/line%3E%3Cline x1='16' y1='17' x2='8' y2='17'%3E%3C/line%3E%3Cpolyline points='10 9 9 9 8 9'%3E%3C/polyline%3E%3C/svg%3E");
+    }
+    div[data-testid="stSidebar"] label[for*="Генератор сертификатов"]::before {
+        content: "";
+        display: block;
+        width: 20px;
+        height: 20px;
+        background-image: url("image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23e0e0e6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='8' r='7'%3E%3C/circle%3E%3Cpolyline points='8.21 13.89 7 23 12 20 17 23 15.79 13.88'%3E%3C/polyline%3E%3C/svg%3E");
+    }
+    div[data-testid="stSidebar"] label[for*="Обработка пересдач"]::before {
+        content: "";
+        display: block;
+        width: 20px;
+        height: 20px;
+        background-image: url("image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23e0e0e6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='8' y='2' width='8' height='4' rx='1' ry='1'%3E%3C/rect%3E%3Cpath d='M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2'%3E%3C/path%3E%3Cpath d='M12 11h4'%3E%3C/path%3E%3Cpath d='M12 16h4'%3E%3C/path%3E%3Cpath d='M8 11h.01'%3E%3C/path%3E%3Cpath d='M8 16h.01'%3E%3C/path%3E%3C/svg%3E");
+    }
+    div[data-testid="stSidebar"] label[for*="Аналитика курсов"]::before {
+        content: "";
+        display: block;
+        width: 20px;
+        height: 20px;
+        background-image: url("image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23e0e0e6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='22 12 18 12 15 21 9 3 6 12 2 12'%3E%3C/polyline%3E%3C/svg%3E");
+    }
+    div[data-testid="stSidebar"] label[for*="Обновление списка"]::before {
+        content: "";
+        display: block;
+        width: 20px;
+        height: 20px;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23e0e0e6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2'%3E%3C/path%3E%3Ccircle cx='9' cy='7' r='4'%3E%3C/circle%3E%3Cpath d='M23 21v-2a4 4 0 0 0-3-3.87'%3E%3C/path%3E%3Cpath d='M16 3.13a4 4 0 0 1 0 7.75'%3E%3C/path%3E%3C/svg%3E");
     }
 
-    /* ------------------ Кнопки в центре ------------------ */
+    /* ------------------ Кнопки в стиле Apple ------------------ */
     .stButton > button {
         background-color: #4a86e8;
         color: white;
@@ -1073,41 +1095,24 @@ def main():
     st.markdown("*Для самых лучших сотрудников проекта от Тимошки!*")
     st.markdown("---")
 
-    # =============================================================================
-    # БОКОВАЯ ПАНЕЛЬ: КАСТОМНЫЕ КНОПКИ ДЛЯ НАВИГАЦИИ
-    # =============================================================================
-    tool_icons = {
-        "Перезачет оценок": '<svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="3" y2="21"></line><line x1="9" y1="12" x2="9" y2="21"></line><line x1="15" y1="12" x2="15" y2="21"></line><line x1="21" y1="12" x2="21" y2="21"></line><path d="M3 3v6a6 6 0 0 0 6 6h6a6 6 0 0 0 6-6V3"></path></svg>',
-        "Генератор HTML-карточек": '<svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>',
-        "Генератор сертификатов": '<svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>',
-        "Обработка пересдач внешней оценки": '<svg viewBox="0 0 24 24"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><path d="M12 11h4"></path><path d="M12 16h4"></path><path d="M8 11h.01"></path><path d="M8 16h.01"></path></svg>',
-        "Аналитика курсов": '<svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>',
-        "Обновление списка студентов": '<svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>'
-    }
-
-    tool_labels = list(tool_icons.keys())
+    # Боковая панель навигации
     with st.sidebar:
         st.image(LOGO_URL, width=200)
         st.markdown("---")
-        st.markdown("### 🎯 Инструменты")
-        
-        # Определяем текущий модуль
-        current_tool = st.session_state.get("selected_tool", tool_labels[0])
-        
-        # Создаём кнопки
-        for label in tool_labels:
-            icon_html = tool_icons[label]
-            is_selected = (label == current_tool)
-            btn_class = "sidebar-button selected" if is_selected else "sidebar-button"
-            if st.button(
-                f"{icon_html} {label}",
-                key=f"nav_{label}",
-                help=label,
-                use_container_width=True
-            ):
-                st.session_state.selected_tool = label
-                st.rerun()
-
+        # Сохраняем выбор в session_state
+        tool = st.radio(
+            "🎯 Выберите инструмент:",
+            [
+                "Перезачет оценок",
+                "Генератор HTML-карточек",
+                "Генератор сертификатов",
+                "Обработка пересдач внешней оценки",
+                "Аналитика курсов",
+                "Обновление списка студентов"
+            ],
+            index=0,
+            key="selected_tool"  # Это важно!
+        )
         st.markdown("---")
         st.markdown("### ℹ️ О платформе")
         st.info("""
@@ -1121,34 +1126,49 @@ def main():
         """)
 
     # Получаем выбранный инструмент
-    tool = st.session_state.get("selected_tool", tool_labels[0])
+    tool = st.session_state.get("selected_tool", "Перезачет оценок")
 
     # =============================================================================
-    # ДАЛЕЕ ИДЁТ ТОТ ЖЕ САМЫЙ КОД, ЧТО И РАНЬШЕ — ВСЯ РАБОЧАЯ ЗОНА В ЦЕНТРЕ
+    # МОДУЛЬ 1: ПЕРЕЗАЧЕТ ОЦЕНОК
     # =============================================================================
     if tool == "Перезачет оценок":
         st.header("📊 Сервис перезачета оценок")
-        # ... (весь существующий код модуля без изменений)
+        # ... (остальной код без изменений)
 
+    # =============================================================================
+    # МОДУЛЬ 2: ГЕНЕРАТОР HTML-КАРТОЧЕК
+    # =============================================================================
     elif tool == "Генератор HTML-карточек":
         st.header("🎓 Генератор карточек НИУ ВШЭ")
-        # ... (весь существующий код модуля без изменений)
+        # ... (остальной код без изменений)
 
+    # =============================================================================
+    # МОДУЛЬ 3: ОБРАБОТКА СЕРТИФИКАТОВ
+    # =============================================================================
     elif tool == "Генератор сертификатов":
         st.header("📜 Система обработки сертификатов")
-        # ... (весь существующий код модуля без изменений)
+        # ... (остальной код без изменений)
 
+    # =============================================================================
+    # МОДУЛЬ 4: ОБРАБОТКА ПЕРЕСДАЧ ВНЕШНЕЙ ОЦЕНКИ
+    # =============================================================================
     elif tool == "Обработка пересдач внешней оценки":
         st.header("📝 Обработка пересдач внешней оценки")
-        # ... (весь существующий код модуля без изменений)
+        # ... (остальной код без изменений)
 
+    # =============================================================================
+    # МОДУЛЬ 5: АНАЛИТИКА КУРСОВ
+    # =============================================================================
     elif tool == "Аналитика курсов":
         st.header("📊 Аналитика курсов")
-        # ... (весь существующий код модуля без изменений)
+        # ... (остальной код без изменений)
 
-    else:  # Обновление списка студентов
+    # =============================================================================
+    # МОДУЛЬ 6: ОБНОВЛЕНИЕ СПИСКА СТУДЕНТОВ
+    # =============================================================================
+    else:  # tool == "Обновление списка студентов"
         st.header("👥 Обновление списка студентов")
-        # ... (весь существующий код модуля без изменений)
+        # ... (остальной код без изменений)
 
     # Футер
     st.markdown("---")
