@@ -15,6 +15,8 @@ import tempfile
 import os
 from typing import Dict, Tuple
 from supabase import create_client, Client
+from streamlit import navigation
+
 
 # =============================================================================
 # КОНФИГУРАЦИЯ ПРИЛОЖЕНИЯ
