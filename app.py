@@ -1,6 +1,6 @@
 """
 DataCulture Unified Platform
-Объединённое приложение для инструментов Data Culture @ HSE University
+Объединённое приложение для инструментов Data Culture
 Автор: Тимошка
 """
 
