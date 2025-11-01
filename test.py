@@ -1379,11 +1379,11 @@ def main():
             
             col1, col2 = st.columns(2)
             with col1:
-                if st.button(f"{icon('database', 16)} Database", use_container_width=True, key="db_btn"):
+                if st.button("Database", use_container_width=True, key="db_btn"):
                     st.markdown('[Open Supabase](https://ldagdlotggsrvsspnfmr.supabase.co)', unsafe_allow_html=True)
             
             with col2:
-                if st.button(f"{icon('book-open', 16)} Docs", use_container_width=True, key="docs_btn"):
+                if st.button("Docs", use_container_width=True, key="docs_btn"):
                     st.info("Документация доступна в README.md")
         
         st.markdown("<hr class='sidebar-divider'>", unsafe_allow_html=True)
@@ -1493,7 +1493,7 @@ def main():
                 """
             )
 
-            if st.button(f"{icon('rocket', 18)} Обработать файл", type="primary"):
+            if st.button("Обработать файл", type="primary"):
                 with st.spinner("Обработка данных..."):
                     try:
                         if file_name.endswith('.xlsx'):
@@ -1518,7 +1518,7 @@ def main():
                         download_filename = f"Результат_{file_name.split('.')[0]}_{current_date}.xlsx"
                         
                         st.download_button(
-                            label=f"{icon('download', 18)} Скачать результат",
+                            label="Скачать результат",
                             data=excel_data,
                             file_name=download_filename,
                             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
@@ -1560,7 +1560,7 @@ def main():
             placeholder="Вставьте сюда текст письма или новости..."
         )
 
-        if st.button(f"{icon('sparkles', 18)} Сформировать HTML", type="primary"):
+        if st.button("Сформировать HTML", type="primary"):
             if not user_text.strip():
                 st.warning("⚠️ Введите текст для генерации")
             else:
@@ -1577,7 +1577,7 @@ def main():
                             st.code(html_code, language="html")
                             
                             st.download_button(
-                                label=f"{icon('save', 18)} Скачать HTML",
+                                label="Скачать HTML",
                                 data=html_code.encode("utf-8"),
                                 file_name="hse_card.html",
                                 mime="text/html"
@@ -1802,7 +1802,7 @@ def main():
                     with st.expander("👀 Предпросмотр списка студентов"):
                         st.dataframe(students_df.head(10), use_container_width=True)
                 
-                if st.button(f"{icon('rocket', 18)} Обработать данные", type="primary", key="process_btn"):
+                if st.button("Обработать данные", type="primary", key="process_btn"):
                     with st.spinner("⚙️ Обработка пересдач..."):
                         try:
                             # Обработка данных
@@ -1851,7 +1851,7 @@ def main():
                                     download_filename_all = f"Пересдачи_все_{current_date}.xlsx"
                                     
                                     st.download_button(
-                                        label=f"{icon('download', 18)} Скачать все записи (XLSX)",
+                                        label="Скачать все записи (XLSX)",
                                         data=output_all.getvalue(),
                                         file_name=download_filename_all,
                                         mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -1873,7 +1873,7 @@ def main():
                                         download_filename_new = f"Пересдачи_новые_{current_date}.xlsx"
                                         
                                         st.download_button(
-                                            label=f"{icon('download', 18)} Скачать только новые записи (XLSX)",
+                                            label="Скачать только новые записи (XLSX)",
                                             data=output_new.getvalue(),
                                             file_name=download_filename_new,
                                             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -2134,7 +2134,7 @@ def main():
                     st.dataframe(students_df.head(20), use_container_width=True)
                 
                 # Кнопка обработки
-                if st.button(f"{icon('sync', 18)} Обновить список студентов в Supabase", type="primary", key="update_students_btn"):
+                if st.button("Обновить список студентов в Supabase", type="primary", key="update_students_btn"):
                     with st.spinner("🔄 Обновление базы данных..."):
                         try:
                             if upload_students_to_supabase(supabase, students_df):
