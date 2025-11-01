@@ -1,0 +1,63 @@
+# Nginx конфигурация для DataCulture Platform
+# Сохраните как: /etc/nginx/sites-available/dataculture
+
+server {
+    listen 80;
+    server_name your-domain.com;  # Замените на ваш домен или IP
+
+    # Логи
+    access_log /var/log/nginx/dataculture-access.log;
+    error_log /var/log/nginx/dataculture-error.log;
+
+    # Максимальный размер загружаемых файлов (для Excel/CSV)
+    client_max_body_size 50M;
+
+    # Основной location для Streamlit
+    location / {
+        proxy_pass http://localhost:8501;
+        proxy_http_version 1.1;
+        
+        # WebSocket поддержка для Streamlit
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        
+        # Заголовки
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        
+        # Таймауты
+        proxy_connect_timeout 60s;
+        proxy_send_timeout 60s;
+        proxy_read_timeout 60s;
+    }
+
+    # Streamlit healthcheck
+    location /_stcore/health {
+        proxy_pass http://localhost:8501/_stcore/health;
+        access_log off;
+    }
+}
+
+# Для HTTPS (после настройки SSL)
+# server {
+#     listen 443 ssl http2;
+#     server_name your-domain.com;
+#
+#     ssl_certificate /etc/letsencrypt/live/your-domain.com/fullchain.pem;
+#     ssl_certificate_key /etc/letsencrypt/live/your-domain.com/privkey.pem;
+#
+#     # Остальная конфигурация как в блоке выше
+#     location / {
+#         proxy_pass http://localhost:8501;
+#         # ... (остальные настройки)
+#     }
+# }
+#
+# # Редирект HTTP -> HTTPS
+# server {
+#     listen 80;
+#     server_name your-domain.com;
+#     return 301 https://$server_name$request_uri;
+# }

@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  dataculture-platform:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dataculture-platform
+    restart: unless-stopped
+    
+    ports:
+      - "8501:8501"
+    
+    # Монтирование secrets из внешнего файла
+    volumes:
+      - ./secrets.toml:/app/.streamlit/secrets.toml:ro
+    
+    environment:
+      # Переменные окружения для Streamlit
+      - STREAMLIT_SERVER_PORT=8501
+      - STREAMLIT_SERVER_ADDRESS=0.0.0.0
+      - STREAMLIT_SERVER_HEADLESS=true
+      - STREAMLIT_BROWSER_GATHER_USAGE_STATS=false
+    
+    # Ограничения ресурсов
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 2G
+        reservations:
+          cpus: '1'
+          memory: 512M
+    
+    # Логирование
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    
+    # Healthcheck
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/_stcore/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  default:
+    name: dataculture-network
