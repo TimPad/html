@@ -1,6 +1,6 @@
 """
 DataCulture Unified Platform
-Объединённое приложение для инструментов Data Culture
+Объединённое приложение для инструментов Data Culture @ HSE University
 Автор: Тимошка
 """
 
@@ -28,8 +28,341 @@ st.set_page_config(
 )
 
 # =============================================================================
-# КОНСТАНТЫ
+# APPLE-INSPIRED DARK THEME STYLING
 # =============================================================================
+
+st.markdown("""
+<style>
+    /* Основные цвета */
+    :root {
+        --apple-bg-primary: #1e1e22;
+        --apple-bg-secondary: #2a2a30;
+        --apple-accent: #5A9DF8;
+        --apple-text-primary: #e0e0e6;
+        --apple-text-secondary: #a1a1aa;
+        --apple-divider: rgba(255,255,255,0.08);
+        --apple-shadow: rgba(0,0,0,0.3);
+    }
+    
+    /* SVG иконки в стиле Apple */
+    .icon-svg {
+        width: 20px;
+        height: 20px;
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 8px;
+    }
+    
+    .icon-svg-large {
+        width: 32px;
+        height: 32px;
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 12px;
+    }
+    
+    /* Глобальный фон */
+    .stApp {
+        background-color: var(--apple-bg-primary);
+    }
+    
+    /* Сайдбар в стиле Apple */
+    [data-testid="stSidebar"] {
+        background-color: var(--apple-bg-secondary);
+        padding-top: 2rem;
+    }
+    
+    [data-testid="stSidebar"] [data-testid="stMarkdownContainer"] {
+        color: var(--apple-text-primary);
+    }
+    
+    /* Логотип в сайдбаре */
+    .sidebar-logo {
+        text-align: center;
+        padding: 1.5rem 1rem 1rem 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .sidebar-logo img {
+        max-width: 140px;
+        filter: brightness(1.1);
+    }
+    
+    .sidebar-title {
+        color: var(--apple-text-primary);
+        font-size: 1.1rem;
+        font-weight: 600;
+        text-align: center;
+        margin-top: 0.75rem;
+        letter-spacing: -0.02em;
+    }
+    
+    .sidebar-subtitle {
+        color: var(--apple-text-secondary);
+        font-size: 0.85rem;
+        text-align: center;
+        margin-top: 0.25rem;
+        font-weight: 400;
+    }
+    
+    /* Разделитель */
+    .sidebar-divider {
+        border: none;
+        border-top: 1px solid var(--apple-divider);
+        margin: 1.5rem 0;
+    }
+    
+    /* Карточки и контейнеры */
+    .element-container {
+        margin-bottom: 1.5rem;
+    }
+    
+    div[data-testid="stExpander"] {
+        background-color: var(--apple-bg-secondary);
+        border: 1px solid var(--apple-divider);
+        border-radius: 12px;
+        overflow: hidden;
+        margin-bottom: 1rem;
+    }
+    
+    /* Кнопки */
+    .stButton > button {
+        background-color: var(--apple-accent);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        padding: 0.6rem 1.5rem;
+        font-weight: 500;
+        letter-spacing: -0.01em;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 8px rgba(90, 157, 248, 0.25);
+    }
+    
+    .stButton > button:hover {
+        background-color: #4a8de0;
+        box-shadow: 0 4px 12px rgba(90, 157, 248, 0.35);
+        transform: translateY(-1px);
+    }
+    
+    .stButton > button:active {
+        transform: translateY(0);
+    }
+    
+    /* Заголовки */
+    h1, h2, h3 {
+        color: var(--apple-text-primary);
+        font-weight: 600;
+        letter-spacing: -0.03em;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+    }
+    
+    h1 {
+        font-size: 2.2rem;
+        margin-top: 1rem;
+    }
+    
+    h2 {
+        font-size: 1.75rem;
+    }
+    
+    h3 {
+        font-size: 1.35rem;
+    }
+    
+    /* Текст */
+    p, li, label {
+        color: var(--apple-text-primary);
+        line-height: 1.6;
+    }
+    
+    .stMarkdown {
+        color: var(--apple-text-primary);
+    }
+    
+    /* Входные поля */
+    .stTextInput > div > div > input,
+    .stTextArea > div > div > textarea,
+    .stSelectbox > div > div > select {
+        background-color: var(--apple-bg-secondary);
+        color: var(--apple-text-primary);
+        border: 1px solid var(--apple-divider);
+        border-radius: 8px;
+        padding: 0.6rem 0.8rem;
+    }
+    
+    .stTextInput > div > div > input:focus,
+    .stTextArea > div > div > textarea:focus,
+    .stSelectbox > div > div > select:focus {
+        border-color: var(--apple-accent);
+        box-shadow: 0 0 0 2px rgba(90, 157, 248, 0.2);
+    }
+    
+    /* Файловый загрузчик */
+    [data-testid="stFileUploader"] {
+        background-color: var(--apple-bg-secondary);
+        border: 2px dashed var(--apple-divider);
+        border-radius: 12px;
+        padding: 2rem;
+        transition: all 0.2s ease;
+    }
+    
+    [data-testid="stFileUploader"]:hover {
+        border-color: var(--apple-accent);
+        background-color: rgba(90, 157, 248, 0.05);
+    }
+    
+    /* Таблицы */
+    .stDataFrame {
+        background-color: var(--apple-bg-secondary);
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px var(--apple-shadow);
+    }
+    
+    /* Метрики */
+    [data-testid="stMetricValue"] {
+        color: var(--apple-text-primary);
+        font-size: 1.8rem;
+        font-weight: 600;
+    }
+    
+    [data-testid="stMetricLabel"] {
+        color: var(--apple-text-secondary);
+        font-size: 0.9rem;
+    }
+    
+    /* Спиннер */
+    .stSpinner > div {
+        border-top-color: var(--apple-accent) !important;
+    }
+    
+    /* Уведомления */
+    .stSuccess, .stInfo, .stWarning, .stError {
+        border-radius: 10px;
+        padding: 1rem 1.25rem;
+        margin: 1rem 0;
+    }
+    
+    /* Радио-кнопки */
+    .stRadio > div {
+        background-color: var(--apple-bg-secondary);
+        border-radius: 10px;
+        padding: 1rem;
+    }
+    
+    .stRadio > div > label {
+        color: var(--apple-text-primary);
+        padding: 0.5rem 0;
+        transition: all 0.2s ease;
+    }
+    
+    .stRadio > div > label:hover {
+        background-color: rgba(90, 157, 248, 0.1);
+        border-radius: 6px;
+    }
+    
+    /* Чекбоксы */
+    .stCheckbox > label {
+        color: var(--apple-text-primary);
+    }
+    
+    /* Вкладки */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 0.5rem;
+        background-color: var(--apple-bg-secondary);
+        border-radius: 10px;
+        padding: 0.5rem;
+    }
+    
+    .stTabs [data-baseweb="tab"] {
+        color: var(--apple-text-secondary);
+        border-radius: 6px;
+        padding: 0.6rem 1.2rem;
+        font-weight: 500;
+    }
+    
+    .stTabs [aria-selected="true"] {
+        background-color: var(--apple-accent);
+        color: white;
+    }
+    
+    /* Скроллбар */
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        background: var(--apple-bg-primary);
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: var(--apple-divider);
+        border-radius: 4px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+        background: rgba(255,255,255,0.15);
+    }
+    
+    /* Анимация появления */
+    .element-container {
+        animation: fadeIn 0.3s ease-in;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* Отступы между блоками */
+    .block-container {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+# =============================================================================
+# LUCIDE SVG ИКОНКИ ДЛЯ ИНТЕРФЕЙСА
+# =============================================================================
+
+def icon(name: str, size: int = 18) -> str:
+    """
+    Возвращает встроенный SVG Lucide как HTML
+    
+    Args:
+        name: название иконки из Lucide
+        size: размер иконки в пикселях
+    
+    Returns:
+        HTML строка с SVG иконкой
+    """
+    icons = {
+        "bar-chart-3": '<svg xmlns="http://www.w3.org/2000/svg" width="{s}" height="{s}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle; margin-right:6px;"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>',
+        "rocket": '<svg xmlns="http://www.w3.org/2000/svg" width="{s}" height="{s}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle; margin-right:6px;"><path d="M4.5 16.5c-1.5 1.5-2 3.3-1.4 4.9l1-1 1.4 1.4 1-1c-1.6-.6-3.4 0-4.9-1.4z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>',
+        "graduation-cap": '<svg xmlns="http://www.w3.org/2000/svg" width="{s}" height="{s}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle; margin-right:6px;"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>',
+        "scroll-text": '<svg xmlns="http://www.w3.org/2000/svg" width="{s}" height="{s}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle; margin-right:6px;"><path d="M8 21h12a2 2 0 0 0 2-2v-2H10v2a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v3h4"/><path d="M19 17V5a2 2 0 0 0-2-2H4"/><path d="M15 8h-5"/><path d="M15 12h-5"/></svg>',
+        "file-edit": '<svg xmlns="http://www.w3.org/2000/svg" width="{s}" height="{s}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle; margin-right:6px;"><path d="M4 13.5V4a2 2 0 0 1 2-2h8.5L20 7.5V20a2 2 0 0 1-2 2h-5.5"/><polyline points="14 2 14 8 20 8"/><path d="M10.42 12.61a2.1 2.1 0 1 1 2.97 2.97L7.95 21 4 22l.99-3.95 5.43-5.44Z"/></svg>',
+        "line-chart": '<svg xmlns="http://www.w3.org/2000/svg" width="{s}" height="{s}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle; margin-right:6px;"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>',
+        "users": '<svg xmlns="http://www.w3.org/2000/svg" width="{s}" height="{s}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle; margin-right:6px;"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+        "alert-triangle": '<svg xmlns="http://www.w3.org/2000/svg" width="{s}" height="{s}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle; margin-right:6px;"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>',
+        "check-circle-2": '<svg xmlns="http://www.w3.org/2000/svg" width="{s}" height="{s}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle; margin-right:6px;"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>',
+        "x-circle": '<svg xmlns="http://www.w3.org/2000/svg" width="{s}" height="{s}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle; margin-right:6px;"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>',
+        "save": '<svg xmlns="http://www.w3.org/2000/svg" width="{s}" height="{s}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle; margin-right:6px;"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>',
+        "download": '<svg xmlns="http://www.w3.org/2000/svg" width="{s}" height="{s}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle; margin-right:6px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>',
+        "sparkles": '<svg xmlns="http://www.w3.org/2000/svg" width="{s}" height="{s}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle; margin-right:6px;"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></svg>',
+        "info": '<svg xmlns="http://www.w3.org/2000/svg" width="{s}" height="{s}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle; margin-right:6px;"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>',
+        "heart-handshake": '<svg xmlns="http://www.w3.org/2000/svg" width="{s}" height="{s}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle; margin-right:6px;"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M12 5 9.04 7.96a2.17 2.17 0 0 0 0 3.08v0c.82.82 2.13.85 3 .07l2.07-1.9a2.82 2.82 0 0 1 3.79 0l2.96 2.66"/><path d="m18 15-2-2"/><path d="m15 18-2-2"/></svg>',
+        "mail": '<svg xmlns="http://www.w3.org/2000/svg" width="{s}" height="{s}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle; margin-right:6px;"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>',
+        "sync": '<svg xmlns="http://www.w3.org/2000/svg" width="{s}" height="{s}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle; margin-right:6px;"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg>',
+        "link": '<svg xmlns="http://www.w3.org/2000/svg" width="{s}" height="{s}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle; margin-right:6px;"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>',
+        "database": '<svg xmlns="http://www.w3.org/2000/svg" width="{s}" height="{s}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle; margin-right:6px;"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"/></svg>',
+        "book-open": '<svg xmlns="http://www.w3.org/2000/svg" width="{s}" height="{s}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle; margin-right:6px;"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>',
+        "zap": '<svg xmlns="http://www.w3.org/2000/svg" width="{s}" height="{s}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle; margin-right:6px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>'
+    }
+    return icons.get(name, '').format(s=size)
 
 LOGO_URL = "https://raw.githubusercontent.com/TimPad/html/main/DC_green.svg"
 
@@ -973,50 +1306,165 @@ def extract_course_data(uploaded_file, course_name):
 def main():
     """Главная функция приложения"""
     
-    # Заголовок
-    st.title("❤️🌸 DataCulture Platform 🌸❤️")
-    st.markdown("**Объединённая платформа инструментов Data Culture @ HSE University**")
-    st.markdown("*Для самых лучших сотрудников проекта от Тимошки!*")
-    st.markdown("---")
-    
-    # Боковая панель навигации
+    # САЙДБАР: Логотип и навигация
     with st.sidebar:
-        st.image(LOGO_URL, width=200)
-        st.markdown("---")
-        
-        tool = st.radio(
-            "🎯 Выберите инструмент:",
-            [
-                "Перезачет оценок",
-                "Генератор HTML-карточек",
-                "Генератор сертификатов",
-                "Обработка пересдач внешней оценки",
-                "Аналитика курсов",
-                "Обновление списка студентов"
-            ],
-            index=0
+        # Логотип и заголовок
+        st.markdown(
+            f"""
+            <div class="sidebar-logo">
+                <img src="{LOGO_URL}" alt="DataCulture Logo">
+                <div class="sidebar-title">DataCulture Platform</div>
+                <div class="sidebar-subtitle">HSE University</div>
+            </div>
+            <hr class="sidebar-divider">
+            """,
+            unsafe_allow_html=True
         )
         
-        st.markdown("---")
-        st.markdown("### ℹ️ О платформе")
-        st.info("""
-        **DataCulture Platform** объединяет шесть ключевых инструментов:
+        # Меню навигации с чистым текстом
+        st.markdown("### Инструменты")
         
-        1. **Перезачет оценок** - автоматический расчет итоговых оценок
-        2. **Генератор карточек** - создание HTML-рассылок в фирменном стиле ВШЭ
-        3. **Сертификаты** - обработка данных для выдачи сертификатов
-        4. **Пересдачи** - обработка пересдач внешней оценки
-        5. **Аналитика курсов** - обработка и загрузка аналитики курсов в Supabase
-        6. **Обновление студентов** - загрузка и обновление списка студентов в Supabase
-        """)
+        # Определение модулей
+        modules = [
+            {"name": "Перезачет оценок", "desc": "Авторасчет итоговых оценок", "icon": "bar-chart-3"},
+            {"name": "Генератор HTML-карточек", "desc": "AI-генерация рассылок", "icon": "graduation-cap"},
+            {"name": "Генератор сертификатов", "desc": "Обработка данных экзаменов", "icon": "scroll-text"},
+            {"name": "Обработка пересдач внешней оценки", "desc": "Supabase интеграция", "icon": "file-edit"},
+            {"name": "Аналитика курсов", "desc": "Загрузка данных курсов", "icon": "line-chart"},
+            {"name": "Обновление списка студентов", "desc": "UPSERT в таблицу students", "icon": "users"}
+        ]
+        
+        # Радио-кнопки без эмоджи
+        module_names = [m['name'] for m in modules]
+        selected_idx = st.radio(
+            "Выберите модуль:",
+            range(len(modules)),
+            format_func=lambda i: module_names[i],
+            index=0,
+            label_visibility="collapsed"
+        )
+        
+        # Получаем выбранный модуль
+        selected_module = modules[selected_idx]
+        tool = selected_module["name"]
+        
+        # Описание выбранного модуля
+        st.markdown(
+            f"""
+            <div style='background-color: rgba(90, 157, 248, 0.1); 
+                        border-left: 3px solid var(--apple-accent); 
+                        padding: 0.75rem; 
+                        border-radius: 8px; 
+                        margin: 1rem 0;
+                        font-size: 0.85rem;
+                        color: var(--apple-text-secondary);'>
+            {icon(selected_module['icon'], 18)} {selected_module['desc']}
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+        
+        st.markdown("<hr class='sidebar-divider'>", unsafe_allow_html=True)
+        
+        # Быстрые действия
+        with st.expander("⚡ Быстрые действия", expanded=False):
+            st.markdown(
+                f"""
+                <div style='font-size: 0.85rem;'>
+                <strong>{icon('link', 16)} Полезные ссылки:</strong>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+            
+            col1, col2 = st.columns(2)
+            with col1:
+                if st.button("Database", use_container_width=True, key="db_btn"):
+                    st.markdown('[Open Supabase](https://ldagdlotggsrvsspnfmr.supabase.co)', unsafe_allow_html=True)
+            
+            with col2:
+                if st.button("Docs", use_container_width=True, key="docs_btn"):
+                    st.info("Документация доступна в README.md")
+        
+        st.markdown("<hr class='sidebar-divider'>", unsafe_allow_html=True)
+        
+        # Статистика и статус
+        with st.expander("📈 Статистика", expanded=False):
+            try:
+                supabase = get_supabase_client()
+                
+                # Проверка подключения
+                students_response = supabase.table('students').select('*', count='exact').limit(1).execute()
+                students_count = students_response.count if hasattr(students_response, 'count') else 0
+                
+                peresdachi_response = supabase.table('peresdachi').select('*', count='exact').limit(1).execute()
+                peresdachi_count = peresdachi_response.count if hasattr(peresdachi_response, 'count') else 0
+                
+                st.markdown(
+                    f"""
+                    <div style='font-size: 0.8rem; line-height: 1.8;'>
+                    <div style='display: flex; justify-content: space-between; align-items: center; padding: 0.25rem 0;'>
+                        <span style='color: var(--apple-text-secondary);'>{icon('users', 16)} Студенты:</span>
+                        <strong style='color: var(--apple-accent);'>{students_count:,}</strong>
+                    </div>
+                    <div style='display: flex; justify-content: space-between; align-items: center; padding: 0.25rem 0;'>
+                        <span style='color: var(--apple-text-secondary);'>{icon('file-edit', 16)} Пересдачи:</span>
+                        <strong style='color: var(--apple-accent);'>{peresdachi_count:,}</strong>
+                    </div>
+                    <div style='display: flex; justify-content: space-between; align-items: center; padding: 0.25rem 0; border-top: 1px solid var(--apple-divider); margin-top: 0.5rem; padding-top: 0.5rem;'>
+                        <span style='color: var(--apple-text-secondary);'>{icon('check-circle-2', 16)} Статус БД:</span>
+                        <strong style='color: #16a34a;'>Активна</strong>
+                    </div>
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
+            except Exception as e:
+                st.markdown(
+                    f"""
+                    <div style='color: #ef4444; font-size: 0.85rem;'>
+                        {icon('x-circle', 16)}
+                        Ошибка подключения
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
+        
+        st.markdown("<hr class='sidebar-divider'>", unsafe_allow_html=True)
+        
+        # Информация о платформе
+        st.markdown(
+            f"""
+            <div style='color: var(--apple-text-secondary); font-size: 0.75rem; padding: 0.5rem 0; text-align: center;'>
+            <strong style='color: var(--apple-text-primary);'>DataCulture Platform v1.0</strong><br>
+            {icon('rocket', 14)} Powered by Streamlit + Supabase<br>
+            {icon('heart-handshake', 14)} Created by Тимошка
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+    
+    # ОСНОВНОЕ СОДЕРЖИМОЕ
+    # Верхний заголовок с Lucide SVG иконкой
+    icon_map = {
+        "Перезачет оценок": "bar-chart-3",
+        "Генератор HTML-карточек": "graduation-cap",
+        "Генератор сертификатов": "scroll-text",
+        "Обработка пересдач внешней оценки": "file-edit",
+        "Аналитика курсов": "line-chart",
+        "Обновление списка студентов": "users"
+    }
+    
+    st.markdown(
+        f'<h1>{icon(icon_map.get(tool, "zap"), 32)} {tool}</h1>',
+        unsafe_allow_html=True
+    )
     
     # =============================================================================
     # МОДУЛЬ 1: ПЕРЕЗАЧЕТ ОЦЕНОК
     # =============================================================================
     
     if tool == "Перезачет оценок":
-        st.header("📊 Сервис перезачета оценок")
-        
         st.markdown("""
         Загрузите Excel или CSV файл с данными студентов для автоматического расчета итоговых оценок.
         
@@ -1045,7 +1493,7 @@ def main():
                 """
             )
 
-            if st.button("🚀 Обработать файл", type="primary"):
+            if st.button("Обработать файл", type="primary"):
                 with st.spinner("Обработка данных..."):
                     try:
                         if file_name.endswith('.xlsx'):
@@ -1070,7 +1518,7 @@ def main():
                         download_filename = f"Результат_{file_name.split('.')[0]}_{current_date}.xlsx"
                         
                         st.download_button(
-                            label="📥 Скачать результат",
+                            label="Скачать результат",
                             data=excel_data,
                             file_name=download_filename,
                             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
@@ -1086,8 +1534,6 @@ def main():
     # =============================================================================
     
     elif tool == "Генератор HTML-карточек":
-        st.header("🎓 Генератор карточек НИУ ВШЭ")
-        
         st.markdown("""
         Создайте HTML-карточку рассылки в фирменном стиле ВШЭ с помощью искусственного интеллекта.
         
@@ -1114,7 +1560,7 @@ def main():
             placeholder="Вставьте сюда текст письма или новости..."
         )
 
-        if st.button("✨ Сформировать HTML", type="primary"):
+        if st.button("Сформировать HTML", type="primary"):
             if not user_text.strip():
                 st.warning("⚠️ Введите текст для генерации")
             else:
@@ -1122,36 +1568,122 @@ def main():
                     try:
                         client = get_nebius_client()
                         html_code = generate_hse_html(client, user_text)
+                        # Сохраняем в session_state чтобы не потерять при обновлении
+                        st.session_state['generated_html'] = html_code
                         st.success("✅ Карточка успешно создана!")
-
-                        col1, col2 = st.columns([1, 1])
-                        
-                        with col1:
-                            st.subheader("📄 HTML-код")
-                            st.code(html_code, language="html")
-                            
-                            st.download_button(
-                                label="💾 Скачать HTML",
-                                data=html_code.encode("utf-8"),
-                                file_name="hse_card.html",
-                                mime="text/html"
-                            )
-                        
-                        with col2:
-                            st.subheader("🌐 Предпросмотр")
-                            import streamlit.components.v1 as components
-                            components.html(html_code, height=800, scrolling=True)
-
                     except Exception as e:
                         st.error(f"❌ Ошибка: {e}")
+        
+        # Отображение результата, если HTML уже сгенерирован
+        if 'generated_html' in st.session_state:
+            html_code = st.session_state['generated_html']
+            
+            # Вычисляем приблизительную высоту блока кода
+            # Streamlit code block: ~20px per line + padding
+            code_lines = html_code.count('\n') + 1
+            code_block_height = max(400, min(code_lines * 20 + 60, 2000))
+            
+            col1, col2 = st.columns([1, 1])
+            
+            with col1:
+                st.subheader("📄 HTML-код")
+                st.code(html_code, language="html")
+                
+                # Кнопки скачивания и копирования
+                btn_col1, btn_col2 = st.columns(2)
+                
+                with btn_col1:
+                    st.download_button(
+                        label="Скачать HTML",
+                        data=html_code.encode("utf-8"),
+                        file_name="hse_card.html",
+                        mime="text/html",
+                        use_container_width=True
+                    )
+                
+                with btn_col2:
+                    # Кнопка копирования с выравниванием
+                    import html
+                    escaped_html = html.escape(html_code)
+                    
+                    st.components.v1.html(
+                        f"""
+                        <style>
+                        .copy-container {{
+                            display: flex;
+                            align-items: center;
+                            height: 38px;
+                            margin-top: -8px;
+                        }}
+                        .copy-btn {{
+                            background-color: #5A9DF8;
+                            color: white;
+                            border: none;
+                            border-radius: 6px;
+                            padding: 0.5rem 1rem;
+                            font-size: 14px;
+                            font-weight: 500;
+                            cursor: pointer;
+                            width: 100%;
+                            transition: all 0.2s ease;
+                            height: 38px;
+                        }}
+                        .copy-btn:hover {{
+                            background-color: #4a8de0;
+                        }}
+                        </style>
+                        <div class="copy-container">
+                            <textarea id="html-content" style="position: absolute; left: -9999px;">{escaped_html}</textarea>
+                            <button class="copy-btn" onclick="
+                                var content = document.getElementById('html-content').value;
+                                navigator.clipboard.writeText(content).then(function() {{
+                                    alert('✅ HTML скопирован в буфер обмена!');
+                                }}, function(err) {{
+                                    alert('❌ Ошибка копирования: ' + err);
+                                }});
+                            ">Скопировать HTML</button>
+                        </div>
+                        """,
+                        height=38
+                    )
+            
+            with col2:
+                st.subheader("🌐 Предпросмотр")
+                import streamlit.components.v1 as components
+
+                # Экранируем HTML и оборачиваем в scrollable div
+                safe_html = html.escape(html_code, quote=True)
+                preview_html = f"""
+                <div style="
+                    width: 100%;
+                    height: 800px;
+                    overflow: auto;
+                    border: 1px solid #333;
+                    border-radius: 12px;
+                    background: white;
+                    padding: 0;
+                    box-sizing: border-box;
+                ">
+                    <iframe 
+                        srcdoc="{safe_html}" 
+                        style="
+                            width: 100%;
+                            height: 100%;
+                            border: none;
+                            display: block;
+                        "
+                        sandbox="allow-same-origin allow-scripts"
+                    ></iframe>
+                </div>
+                """
+
+                components.html(preview_html, height=850, scrolling=False)
     
     # =============================================================================
     # МОДУЛЬ 3: ОБРАБОТКА СЕРТИФИКАТОВ
     # =============================================================================
     
     elif tool == "Генератор сертификатов":
-        st.header("📜 Система обработки сертификатов")
-        
         st.markdown("""
         Автоматическая обработка данных экзаменов студентов и генерация текста для сертификатов.
         
@@ -1160,14 +1692,15 @@ def main():
         2. Excel со справочником навыков (колонки: Дисциплина, Уровень_оценки, Описание_навыков)
         """)
         
-        # Боковая панель с примерами файлов
-        with st.sidebar:
-            st.markdown("---")
-            st.markdown("### 📥 Скачать примеры")
-            
-            # Проверяем наличие файлов примеров
-            current_dir = os.path.dirname(os.path.abspath(__file__))
-            
+        # Кнопки скачивания примеров
+        st.markdown("### 📥 Примеры файлов")
+        st.markdown("Скачайте примеры файлов для правильного форматирования данных:")
+        
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        
+        col_btn1, col_btn2 = st.columns(2)
+        
+        with col_btn1:
             # Excel пример студентов
             excel_example_path = os.path.join(current_dir, 'Сертификаты пример.xlsx')
             if os.path.exists(excel_example_path):
@@ -1175,14 +1708,15 @@ def main():
                     excel_example_data = example_file.read()
                 
                 st.download_button(
-                    label="📊 Пример данных студентов",
+                    label="Пример данных студентов",
                     data=excel_example_data,
                     file_name="Сертификаты_пример.xlsx",
                     mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                     help="Скачайте этот файл как шаблон для ваших данных студентов",
                     use_container_width=True
                 )
-            
+        
+        with col_btn2:
             # Excel справочник навыков
             skills_example_path = os.path.join(current_dir, 'агрегированные_навыки.xlsx')
             if os.path.exists(skills_example_path):
@@ -1190,30 +1724,15 @@ def main():
                     skills_data = skills_file.read()
                 
                 st.download_button(
-                    label="📄 Справочник навыков",
+                    label="Справочник навыков",
                     data=skills_data,
                     file_name="агрегированные_навыки.xlsx",
                     mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                     help="Скачайте справочник с описаниями навыков",
                     use_container_width=True
                 )
-            
-            st.markdown("---")
-            st.markdown("### 📋 Требования к файлам")
-            st.markdown("""
-            **📊 Данные студентов:**
-            - `Учащийся`
-            - `Название Дисциплины 1/2/3`
-            - `Дисциплина 1/2/3`
-            - `Оценка 5 баллов Дисциплина 1/2/3`
-            
-            **📄 Справочник навыков:**
-            - `Дисциплина`
-            - `Уровень_оценки`
-            - `Описание_навыков`
-            
-            💡 **Используйте примеры выше!**
-            """)
+        
+        st.markdown("---")
         
         col1, col2 = st.columns([1, 1])
         
@@ -1289,8 +1808,6 @@ def main():
     # =============================================================================
     
     elif tool == "Обработка пересдач внешней оценки":
-        st.header("📝 Обработка пересдач внешней оценки")
-        
         st.markdown("""
         Автоматическая обработка пересдач из внешней системы оценивания с интеграцией Supabase.
         
@@ -1360,7 +1877,7 @@ def main():
                     with st.expander("👀 Предпросмотр списка студентов"):
                         st.dataframe(students_df.head(10), use_container_width=True)
                 
-                if st.button("🚀 Обработать данные", type="primary", key="process_btn"):
+                if st.button("Обработать данные", type="primary", key="process_btn"):
                     with st.spinner("⚙️ Обработка пересдач..."):
                         try:
                             # Обработка данных
@@ -1409,7 +1926,7 @@ def main():
                                     download_filename_all = f"Пересдачи_все_{current_date}.xlsx"
                                     
                                     st.download_button(
-                                        label="📥 Скачать все записи (XLSX)",
+                                        label="Скачать все записи (XLSX)",
                                         data=output_all.getvalue(),
                                         file_name=download_filename_all,
                                         mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -1431,7 +1948,7 @@ def main():
                                         download_filename_new = f"Пересдачи_новые_{current_date}.xlsx"
                                         
                                         st.download_button(
-                                            label="📥 Скачать только новые записи (XLSX)",
+                                            label="Скачать только новые записи (XLSX)",
                                             data=output_new.getvalue(),
                                             file_name=download_filename_new,
                                             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -1512,8 +2029,6 @@ def main():
     # =============================================================================
     
     elif tool == "Аналитика курсов":
-        st.header("📊 Аналитика курсов")
-        
         st.markdown("""
         Автоматическая обработка и загрузка аналитики курсов в Supabase.
         
@@ -1630,8 +2145,6 @@ def main():
     # =============================================================================
     
     else:  # tool == "Обновление списка студентов"
-        st.header("👥 Обновление списка студентов")
-        
         st.markdown("""
         Загрузка и обновление списка студентов в базе данных Supabase.
         
@@ -1696,7 +2209,7 @@ def main():
                     st.dataframe(students_df.head(20), use_container_width=True)
                 
                 # Кнопка обработки
-                if st.button("🚀 Обновить список студентов в Supabase", type="primary", key="update_students_btn"):
+                if st.button("Обновить список студентов в Supabase", type="primary", key="update_students_btn"):
                     with st.spinner("🔄 Обновление базы данных..."):
                         try:
                             if upload_students_to_supabase(supabase, students_df):
@@ -1749,9 +2262,9 @@ def main():
     # Футер
     st.markdown("---")
     st.markdown(
-        """
+        f"""
         <div style='text-align: center; color: #666;'>
-            <p>DataCulture Platform v1.0 | Created with ❤️ by Тимошка 🚀</p>
+            <p>DataCulture Platform v1.0 | Created with {icon('heart-handshake', 16)} by Тимошка {icon('rocket', 16)}</p>
         </div>
         """, 
         unsafe_allow_html=True
