@@ -2181,12 +2181,17 @@ def main():
             )
             
             if st.button("Войти", type="primary", key="students_login_btn"):
-                if password_input == "1991":
-                    st.session_state['students_authorized'] = True
-                    st.success("✅ Доступ разрешен!")
-                    st.rerun()
-                else:
-                    st.error("❌ Неверный пароль")
+                # Получаем пароль из secrets.toml
+                try:
+                    correct_password = st.secrets["STUDENTS_UPDATE_PASSWORD"]
+                    if password_input == correct_password:
+                        st.session_state['students_authorized'] = True
+                        st.success("✅ Доступ разрешен!")
+                        st.rerun()
+                    else:
+                        st.error("❌ Неверный пароль")
+                except KeyError:
+                    st.error("❌ Пароль не настроен в secrets.toml. Добавьте STUDENTS_UPDATE_PASSWORD в .streamlit/secrets.toml")
             
             st.info("🔐 Для доступа к функции обновления списка студентов необходимо ввести пароль.")
             st.stop()
