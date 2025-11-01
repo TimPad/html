@@ -2164,6 +2164,36 @@ def main():
         - Курс
         """)
         
+        # Проверка пароля
+        st.markdown("---")
+        st.subheader("🔒 Авторизация")
+        
+        # Используем session_state для хранения статуса авторизации
+        if 'students_authorized' not in st.session_state:
+            st.session_state['students_authorized'] = False
+        
+        if not st.session_state['students_authorized']:
+            password_input = st.text_input(
+                "Введите пароль для доступа к модулю",
+                type="password",
+                key="students_password_input",
+                help="Введите пароль для обновления списка студентов"
+            )
+            
+            if st.button("Войти", type="primary", key="students_login_btn"):
+                if password_input == "1991":
+                    st.session_state['students_authorized'] = True
+                    st.success("✅ Доступ разрешен!")
+                    st.rerun()
+                else:
+                    st.error("❌ Неверный пароль")
+            
+            st.info("🔐 Для доступа к функции обновления списка студентов необходимо ввести пароль.")
+            st.stop()
+        
+        # Если авторизован, показываем основной функционал
+        st.success("✅ Вы авторизованы")
+        
         # Проверка подключения
         try:
             supabase = get_supabase_client()
